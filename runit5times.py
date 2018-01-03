@@ -1,14 +1,17 @@
-#!/bin/python
-
+# standard agent initialization
 import time
+import newrelic.agent
+newrelic.agent.initialize()
 
-from subprocess import call
+# register application since this is a background task
+newrelic.agent.register_application(timeout=3.0)
 
-#Run the script 5 times just to get a good reading in the NewRelic UI 
-#A timer put in of 6 seconds to ensure that it completes the test cycle each time
-x=0
-while x < 5:
-	call(["newrelic-admin","validate-config","newrelic.ini"])
-	x = x + 1
-	time.sleep(6)
+@newrelic.agent.background_task()
+def hello_world():
+    for x in range(0, 5):
+        print("Hello World")
+        time.sleep(1)
+
+if __name__ == '__main__':
+    hello_world()
 

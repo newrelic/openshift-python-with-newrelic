@@ -30,19 +30,18 @@ COPY help.1 /
 RUN mkdir -p /licenses
 COPY licenses /licenses
 
-### Licenese Key for Newrelic
-ARG NEW_RELIC_LICENSE_KEY='XXXXXXXXXXX'
-ENV NEW_RELIC_LICENSE_KEY=$NEW_RELIC_LICENSE_KEY
-
 #Install the NewRelic Agent
 RUN pip install --upgrade pip && pip install newrelic
-RUN rm -rf newrelic.ini && newrelic-admin generate-config ${NEW_RELIC_LICENSE_KEY} newrelic.ini
-
-#The agent needs to know where the INI file is
-ENV NEW_RELIC_CONFIG_FILE=/newrelic.ini
 
 #Script to run the Python Agent test 5 times to make sure you get a good reading in the web UI
-COPY runit5times.py /
+COPY runit5times.py .
 
 #When you launch the container, it runs the script and then exits
-ENTRYPOINT ./runit5times.py
+ENTRYPOINT ["newrelic-admin", "run-program"]
+
+#Default environment variables
+ENV NEW_RELIC_LOG=stderr \
+    NEW_RELIC_LOG_LEVEL=info \
+    NEW_RELIC_ENABLED=true
+
+CMD ["python", "runit5times.py"]
