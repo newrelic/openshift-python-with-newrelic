@@ -32,6 +32,7 @@ COPY licenses /licenses
 
 ### Licenese Key for Newrelic
 ARG NEW_RELIC_LICENSE_KEY='XXXXXXXXXXX'
+ENV NEW_RELIC_LICENSE_KEY=$NEW_RELIC_LICENSE_KEY
 
 #Install the NewRelic Agent
 RUN pip install --upgrade pip && pip install newrelic
