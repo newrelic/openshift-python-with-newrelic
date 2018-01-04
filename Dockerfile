@@ -31,7 +31,7 @@ RUN mkdir -p /licenses
 COPY licenses /licenses
 
 #Install the NewRelic Agent
-RUN pip install --upgrade pip && pip install newrelic
+RUN pip install newrelic
 
 #Script to run the Python Agent test 5 times to make sure you get a good reading in the web UI
 COPY runit5times.py .
