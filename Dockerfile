@@ -5,7 +5,7 @@ MAINTAINER Vinod Vydier<vvydier@newrelic.com>
 RUN REPOLIST=rhel-7-server-rpms,rhel-7-server-optional-rpms,epel \
 ### Add your package needs here
     INSTALL_PKGS="python2-pip" && \
-    yum -y update-minimal --disablerepo "*" --enablerepo rhel-7-server-rpms --setopt=tsflags=nodocs \
+    yum -y update-minimal --security --sec-severity=Important --sec-severity=Critical --setopt=tsflags=nodocs \
       --security --sec-severity=Important --sec-severity=Critical && \
     curl -o epel-release-latest-7.noarch.rpm -SL https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
       --retry 5 --retry-max-time 0 -C - && \
